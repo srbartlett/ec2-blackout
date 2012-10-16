@@ -1,24 +1,20 @@
 # Ec2::Blackout
 
-TODO: Write a gem description
+Want to reduce your EC2 costs?
+
+ec2-blackout is a command-line tool to stop running EC2 instances.
+
+Use ec2-blackout to shutdown EC2 instances when they are idle, for example when you are not in the office.
+
+Definitely not suitable for production instances but development and test instances can generally be shutdown overnight to save money.
 
 ## Installation
-
-Add this line to your application's Gemfile:
-
-    gem 'ec2-blackout'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
 
     $ gem install ec2-blackout
 
 ## Usage
 
-TODO: Write usage instructions here
+    $ ec2-blackout --help
 
 ## Contributing
 

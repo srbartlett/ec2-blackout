@@ -7,7 +7,7 @@ module Ec2
     end
 
     def self.summary
-      'A command-line tool to shutdown C2 instances.'
+      'A command-line tool to shutdown EC2 instances.'
     end
 
     def self.description
