@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["stephenb@rtlett.org"]
   gem.description   = Ec2::Blackout.description
   gem.summary       = Ec2::Blackout.summary
-  gem.homepage      = ""
+  gem.homepage      = "https://github.com/srbartlett/ec2-blackout"
   gem.add_dependency 'commander'
   gem.add_dependency 'aws-sdk'
   gem.files         = `git ls-files`.split($\)
