@@ -13,7 +13,7 @@ class Ec2::Blackout::Shutdown
           if stoppable? instance
             @ui.say "-> Stopping instance: #{instance.id}, name: #{instance.tags['Name']}"
             unless dry_run?
-              instance.add_tag('ec2:blackout:on', Date.now.utc)
+              instance.add_tag('ec2:blackout:on', :value => Time.now.utc)
               instance.stop
             end
           elsif instance.status == :running
@@ -32,7 +32,7 @@ class Ec2::Blackout::Shutdown
   end
 
   def stoppable? instance
-    (instance.status == :running && exclude_tag && !instance.tags[exclude_tag].nil?) or
+    (instance.status == :running && exclude_tag && !instance.tags.to_h.key?(exclude_tag)) or
       (instance.status == :running && exclude_tag.nil?)
   end
 

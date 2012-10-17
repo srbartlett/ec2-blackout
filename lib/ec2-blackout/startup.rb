@@ -32,7 +32,7 @@ class Ec2::Blackout::Startup
   end
 
   def startable? instance
-    (instance.status == :stopped && instance.tags['ec2:blackout:on']) ||
+    (instance.status == :stopped && instance.tags.to_h.key?('ec2:blackout:on')) or
       (instance.status == :stopped && @options[:force])
   end
 
