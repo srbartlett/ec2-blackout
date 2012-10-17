@@ -22,6 +22,7 @@ command "on" do |c|
 
   c.option '-r', '--regions STRING', 'Comma separated list of regions to search. Defaults to all regions'
   c.option '-x', '--exclude-by-tag STRING', 'Exclude instances with the specified tag.'
+  c.option '-d', '--dry-run', 'Find instances without stopping them'
 
   c.action do |args, options|
     options.default :regions => DEFAULT_REGIONS
@@ -36,6 +37,7 @@ command "off" do |c|
 
   c.option '-r', '--regions STRING', 'Comma separated list of regions to search. Defaults to all regions'
   c.option '-f', '--force', 'Force start up regardless of who shut them dowm'
+  c.option '-d', '--dry-run', 'Find instances without starting them'
 
   c.action do |args, options|
     options.default :regions => DEFAULT_REGIONS

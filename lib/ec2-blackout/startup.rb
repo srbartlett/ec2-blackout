@@ -12,8 +12,10 @@ class Ec2::Blackout::Startup
         @aws.regions[region].instances.each do |instance|
           if startable? instance
             @ui.say "-> Starting instance: #{instance.id}, name: #{instance.tags['Name']}"
-            instance.tags.delete('ec2::blackout::on')
-            instance.start
+            unless dry_run?
+              instance.tags.delete('ec2:blackout:on')
+              instance.start
+            end
           elsif instance.status == :stopped
             @ui.say "-> Skipping instance: #{instance.id}, name: #{instance.tags['Name'] || 'N/A'}"
           end
@@ -30,8 +32,11 @@ class Ec2::Blackout::Startup
   end
 
   def startable? instance
-    (instance.status == :stopped && instance.tags['ec2::blackout::on']) ||
+    (instance.status == :stopped && instance.tags['ec2:blackout:on']) ||
       (instance.status == :stopped && @options[:force])
   end
 
+  def dry_run?
+    @options[:dry_run]
+  end
 end

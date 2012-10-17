@@ -12,8 +12,10 @@ class Ec2::Blackout::Shutdown
         @aws.regions[region].instances.each do |instance|
           if stoppable? instance
             @ui.say "-> Stopping instance: #{instance.id}, name: #{instance.tags['Name']}"
-            instance.add_tag('ec2::blackout::on', Date.now.utc)
-            #instance.stop
+            unless dry_run?
+              instance.add_tag('ec2:blackout:on', Date.now.utc)
+              instance.stop
+            end
           elsif instance.status == :running
             @ui.say "-> Skipping instance: #{instance.id}, name: #{instance.tags['Name']}, region: #{region}"
           end
@@ -36,5 +38,9 @@ class Ec2::Blackout::Shutdown
 
   def exclude_tag
     @options[:exclude_by_tag]
+  end
+
+  def dry_run?
+    @options[:dry_run]
   end
 end
