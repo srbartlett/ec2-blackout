@@ -26,16 +26,14 @@ It is recommended you create an access policy using Amazon IAM
         {
           "Action": [
             "ec2:StartInstances",
-            "ec2:StopInstances"
+            "ec2:StopInstances",
             "ec2:CreateTags",
             "ec2:DeleteTags",
-            "ec2:DescribeInstances"
+            "ec2:DescribeInstances",
             "ec2:DescribeRegions"
           ],
           "Effect": "Allow",
-          "Resource": \[
-            "\*"
-          \]
+          "Resource": "\*"
         }
       ]
     }
