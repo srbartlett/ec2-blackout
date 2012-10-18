@@ -34,7 +34,7 @@ It is recommended you create an access policy using Amazon IAM
           ],
           "Effect": "Allow",
           "Resource": \[
-            "*"
+            "\*"
           \]
         }
       ]
