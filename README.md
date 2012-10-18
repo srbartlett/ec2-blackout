@@ -53,6 +53,23 @@ Once installed you need to export your AWS credentials
 
     $ ec2-blackout --help
 
+To run a blackout across all AWS regions:
+
+    $ ec2-blackout on
+
+To run a blackout across a subset of AWS regions:
+
+    $ ec2-blackout on -r us-east-1,us-west-1
+
+To run a blackout but exlude instances that have a tag of the given name:
+
+    $ ec2-blackout on -x do_not_blackout
+
+To leave a blackout and stop those instances that were previously stopped:
+
+    $ ec2-blackout off
+
+`ec2-blackout` also provides a dry-run using the `--dry-run` option.
 
 
 ## Contributing
