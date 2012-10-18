@@ -59,13 +59,13 @@ To run a blackout across all AWS regions:
 
 To run a blackout across a subset of AWS regions:
 
-    $ ec2-blackout on -r us-east-1,us-west-1
+    $ ec2-blackout on --regions us-east-1,us-west-1
 
-To run a blackout but exlude instances that have a tag of the given name:
+To run a blackout but exclude instances that have been tagged:
 
-    $ ec2-blackout on -x do_not_blackout
+    $ ec2-blackout on --exclude-by-tag do_not_blackout
 
-To leave a blackout and stop those instances that were previously stopped:
+To leave a blackout and start the instances that were previously stopped:
 
     $ ec2-blackout off
 
