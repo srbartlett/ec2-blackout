@@ -33,9 +33,9 @@ It is recommended you create an access policy using Amazon IAM
             "ec2:DescribeRegions"
           ],
           "Effect": "Allow",
-          "Resource": [
+          "Resource": \[
             "*"
-          ]
+          \]
         }
       ]
     }
