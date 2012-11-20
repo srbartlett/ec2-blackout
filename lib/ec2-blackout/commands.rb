@@ -12,7 +12,7 @@ def aws
      :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY'])
 end
 
-DEFAULT_REGIONS = ['us-east-1', 'us-west-1', 'us-west-2', 'eu-west-1', 'ap-southeast-1',
+DEFAULT_REGIONS = ['us-east-1', 'us-west-1', 'us-west-2', 'eu-west-1', 'ap-southeast-1', 'ap-southeast-2',
       'ap-northeast-1', 'sa-east-1'].join(',')
 
 command "on" do |c|
