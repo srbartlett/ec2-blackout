@@ -1,6 +1,6 @@
 module Ec2
   module Blackout
-    VERSION = "0.0.4"
+    VERSION = "0.0.5"
 
     def self.name
       'ec2-blackout'
