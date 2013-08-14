@@ -10,6 +10,9 @@ If you don't, `ec2-blackout` could save you money
 
 Use ec2-blackout to shutdown EC2 instances when they are idle, for example when you are not in the office.
 
+If an instance has an Elastic IP address, `ec2-blackout` will reassociate the EIP when the instance is started.
+Note: When an instance with an EIP is stopped AWS will automatically disassociate the EIP. AWS charge a small hourly fee for an unattached EIP.
+
 Certinaly not suitable for production instances but development and test instances can generally be shutdown overnight to save money.
 
 ## Installation
@@ -30,7 +33,9 @@ It is recommended you create an access policy using Amazon IAM
             "ec2:CreateTags",
             "ec2:DeleteTags",
             "ec2:DescribeInstances",
-            "ec2:DescribeRegions"
+            "ec2:DescribeRegions",
+            "ec2:DescribeAddresses",
+            "ec2:AssociateAddress"
           ],
           "Effect": "Allow",
           "Resource": "\*"

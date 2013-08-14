@@ -11,14 +11,11 @@ class Ec2::Blackout::Startup
       AWS.memoize do
         @aws.regions[region].instances.each do |instance|
           if startable? instance
-            @ui.say "-> Starting instance: #{instance.id}, name: #{instance.tags['Name']}"
+            @ui.say "-> Starting instance: #{instance.id}, name: #{instance.tags['Name']}."
             unless dry_run?
               instance.tags.delete('ec2:blackout:on')
               instance.start
-              if instance.tags['ec2:blackout:eip']
-                instance.associate_elastic_ip(instance.tags['ec2:blackout:eip']) rescue nil
-                instance.tags.delete('ec2:blackout:eip')
-              end
+              associate_eip(instance)
             end
           elsif instance.status == :stopped
             @ui.say "-> Skipping instance: #{instance.id}, name: #{instance.tags['Name'] || 'N/A'}"
@@ -42,5 +39,21 @@ class Ec2::Blackout::Startup
 
   def dry_run?
     @options[:dry_run]
+  end
+
+  def associate_eip instance
+    eip = instance.tags['ec2:blackout:eip']
+    if eip
+      @ui.say("Associating Elastic IP #{eip} to #{instance.id}")
+      attempts = 0
+      begin
+        instance.associate_elastic_ip(eip)
+      rescue
+        sleep 5
+        attempts += 1
+        retry if attempts < 60 # 5 mins
+      end
+      instance.tags.delete('ec2:blackout:eip')
+    end
   end
 end
