@@ -13,7 +13,7 @@ class Ec2::Blackout::Shutdown
           if stoppable? instance
             @ui.say "-> Stopping instance: #{instance.id}, name: #{instance.tags['Name']}"
             unless dry_run?
-              instance.add_tag('ec2:blackout:on', :value => Time.now.utc)
+              tag(instance)
               instance.stop
             end
           elsif instance.status == :running
@@ -42,5 +42,12 @@ class Ec2::Blackout::Shutdown
 
   def dry_run?
     @options[:dry_run]
+  end
+
+  def tag instance
+    instance.add_tag('ec2:blackout:on', :value => Time.now.utc)
+    if instance.has_elastic_ip?
+      instance.add_tag('ec2:blackout:eip', :value => instance.elastic_ip)
+    end
   end
 end

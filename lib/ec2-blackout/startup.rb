@@ -15,6 +15,10 @@ class Ec2::Blackout::Startup
             unless dry_run?
               instance.tags.delete('ec2:blackout:on')
               instance.start
+              if instance.tags['ec2:blackout:eip']
+                instance.associate_elastic_ip(instance.tags['ec2:blackout:eip']) rescue nil
+                instance.tags.delete('ec2:blackout:eip')
+              end
             end
           elsif instance.status == :stopped
             @ui.say "-> Skipping instance: #{instance.id}, name: #{instance.tags['Name'] || 'N/A'}"
