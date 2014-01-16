@@ -9,6 +9,7 @@ Gem::Specification.new do |gem|
   gem.homepage      = "https://github.com/srbartlett/ec2-blackout"
   gem.add_dependency 'commander'
   gem.add_dependency 'aws-sdk'
+  gem.add_dependency 'colorize'
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
