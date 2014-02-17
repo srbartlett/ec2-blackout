@@ -2,7 +2,7 @@
 require File.expand_path('../lib/ec2-blackout/version', __FILE__)
 
 Gem::Specification.new do |gem|
-  gem.authors       = ["Stephen Bartlett"]
+  gem.authors       = ["Stephen Bartlett", "Charles Blaxland"]
   gem.email         = ["stephenb@rtlett.org"]
   gem.description   = Ec2::Blackout.description
   gem.summary       = Ec2::Blackout.summary
