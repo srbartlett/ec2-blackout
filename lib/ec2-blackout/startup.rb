@@ -7,7 +7,7 @@ class Ec2::Blackout::Startup
   end
 
   def execute
-    @ui.say 'Dry run specified - no instances will be started'.bold
+    @ui.say 'Dry run specified - no instances will be started'.bold if @options.dry_run
     @ui.say "Starting instances"
     @options.regions.each do |region|
       @ui.say "Checking region #{region}"
