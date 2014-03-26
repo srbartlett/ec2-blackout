@@ -7,7 +7,7 @@ class Ec2::Blackout::Shutdown
   end
 
   def execute
-    @ui.say 'Dry run specified - no instances will be stopped'.bold
+    @ui.say 'Dry run specified - no instances will be stopped'.bold if @options.dry_run
     @ui.say "Stopping instances"
     @options.regions.each do |region|
       @ui.say "Checking region #{region}"
