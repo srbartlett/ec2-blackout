@@ -41,6 +41,8 @@ class Ec2::Blackout::Ec2Instance
       [false, "matches exclude tags"]
     elsif !@options.matches_include_tags?(tags)
       [false, "does not match include tags"]
+    elsif @instance.root_device_type != :ebs
+      [false, "is not ebs root device"]
     else
       true
     end
