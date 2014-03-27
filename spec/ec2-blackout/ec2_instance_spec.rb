@@ -36,12 +36,38 @@ module Ec2::Blackout
         instance.stop
       end
 
-      it "saves the associated elastic IP as a tag" do
-        aws_instance.stub(:has_elastic_ip?).and_return(true)
-        eip = double(:allocation_id => "eipalloc-eab23c0d")
-        aws_instance.stub(:elastic_ip).and_return(eip)
-        aws_instance.should_receive(:add_tag).with(Ec2Instance::EIP_TAG_NAME, :value => "eipalloc-eab23c0d")
-        instance.stop
+      context 'when the instance has an Elastic IP' do
+        let(:eip) { double(:eip) }
+
+        before do
+          aws_instance.stub(:has_elastic_ip?).and_return(true)
+          aws_instance.stub(:elastic_ip).and_return(eip)
+        end
+
+        context 'and it is running in a VPC' do
+
+          before do
+            eip.stub(:vpc?).and_return(true)
+          end
+
+          it "saves the associated elastic IP as a tag" do
+            eip.should_receive(:allocation_id).and_return("eipalloc-eab23c0d")
+            aws_instance.should_receive(:add_tag).with(Ec2Instance::EIP_TAG_NAME, :value => "eipalloc-eab23c0d")
+            instance.stop
+          end
+        end
+
+        context 'and it is running in EC2 classic' do
+          before do
+            eip.stub(:vpc?).and_return(false)
+          end
+
+          it "saves the elastic public IP as a tag" do
+            eip.should_receive(:public_ip).and_return("public-ip")
+            aws_instance.should_receive(:add_tag).with(Ec2Instance::EIP_TAG_NAME, :value => "public-ip")
+            instance.stop
+          end
+        end
       end
 
     end
@@ -116,6 +142,12 @@ module Ec2::Blackout
         stoppable, reason = instance.stoppable?
         expect(stoppable).to be_false
       end
+
+      it "returns false if the instance volume type is not EBS" do
+        aws_instance.stub(:root_device_type).and_return('not_ebs')
+        stoppable, reason = instance.stoppable?
+        expect(stoppable).to be_false
+      end
     end
 
     describe "#startable?" do
@@ -149,6 +181,7 @@ module Ec2::Blackout
       underlying_aws_stub.stub(:tags).and_return(ec2_tags({}))
       underlying_aws_stub.stub(:add_tag)
       underlying_aws_stub.stub(:stop)
+      underlying_aws_stub.stub(:root_device_type).and_return(:ebs)
       Ec2Instance.new(underlying_aws_stub, options)
     end
 
