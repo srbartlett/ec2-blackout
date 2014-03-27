@@ -79,7 +79,11 @@ class Ec2::Blackout::Ec2Instance
   def tag
     @instance.add_tag(TIMESTAMP_TAG_NAME, :value => Time.now.utc)
     if @instance.has_elastic_ip?
-      @instance.add_tag(EIP_TAG_NAME, :value => @instance.elastic_ip.allocation_id)
+      if @instance.elastic_ip.vpc?
+        @instance.add_tag(EIP_TAG_NAME, :value => @instance.elastic_ip.allocation_id)
+      else
+        @instance.add_tag(EIP_TAG_NAME, :value => @instance.elastic_ip.public_ip)
+      end
     end
   end
 
