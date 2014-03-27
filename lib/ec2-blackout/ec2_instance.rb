@@ -41,6 +41,8 @@ class Ec2::Blackout::Ec2Instance
       [false, "matches exclude tags"]
     elsif !@options.matches_include_tags?(tags)
       [false, "does not match include tags"]
+    elsif @instance.root_device_type != :ebs
+      [false, "is not ebs root device"]
     else
       true
     end
@@ -77,7 +79,11 @@ class Ec2::Blackout::Ec2Instance
   def tag
     @instance.add_tag(TIMESTAMP_TAG_NAME, :value => Time.now.utc)
     if @instance.has_elastic_ip?
-      @instance.add_tag(EIP_TAG_NAME, :value => @instance.elastic_ip.allocation_id)
+      if @instance.elastic_ip.vpc?
+        @instance.add_tag(EIP_TAG_NAME, :value => @instance.elastic_ip.allocation_id)
+      else
+        @instance.add_tag(EIP_TAG_NAME, :value => @instance.elastic_ip.public_ip)
+      end
     end
   end
 
