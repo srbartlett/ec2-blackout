@@ -8,7 +8,7 @@ Gem::Specification.new do |gem|
   gem.summary       = Ec2::Blackout.summary
   gem.homepage      = "https://github.com/srbartlett/ec2-blackout"
   gem.add_dependency 'commander'
-  gem.add_dependency 'aws-sdk'
+  gem.add_dependency 'aws-sdk-v1', '~> 1.0'
   gem.add_dependency 'colorize'
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
