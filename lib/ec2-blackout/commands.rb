@@ -29,6 +29,8 @@ command "off" do |c|
 
   c.option '-r', '--regions region1,region2', Array, 'Comma separated list of regions to search. Defaults to all regions'
   c.option '-f', '--force', 'Force start up regardless of who shut them dowm'
+  c.option '-x', '--exclude-by-tag tagname1=value,tagname2', Array, 'Comma separated list of name-value tags to exclude from the blackout off'
+  c.option '-i', '--include-by-tag tagname1=value,tagname2', Array, 'Comma separated list of name-value tags to include in the blackout off'
   c.option '-d', '--dry-run', 'Find instances without starting them'
 
   c.action do |args, options|
