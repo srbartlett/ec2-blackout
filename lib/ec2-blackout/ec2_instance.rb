@@ -55,6 +55,10 @@ class Ec2::Blackout::Ec2Instance
       true
     elsif !tags[TIMESTAMP_TAG_NAME]
       [false, "instance was not originally stopped by ec2-blackout"]
+    elsif @options.matches_exclude_tags?(tags)
+      [false, "matches exclude tags"]
+    elsif !@options.matches_include_tags?(tags)
+      [false, "does not match include tags"]
     else
       true
     end

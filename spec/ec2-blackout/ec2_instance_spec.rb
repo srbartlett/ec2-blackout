@@ -172,6 +172,31 @@ module Ec2::Blackout
         startable, reason = instance.startable?
         expect(startable).to be_true
       end
+
+      it "returns false if the instance matches the exclude tags specified in the options" do
+        options = Ec2::Blackout::Options.new(:exclude_by_tag =>  ["foo=bar"])
+        instance = stubbed_startable_instance(aws_instance, options)
+        aws_instance.stub(:tags).and_return(ec2_tags("foo" => "bar", Ec2Instance::TIMESTAMP_TAG_NAME => '2014-02-13 02:35:52 UTC'))
+        startable, reason = instance.startable?
+        expect(startable).to be_false
+      end
+
+      it "returns true if the instance matches the include tags specified in the options" do
+        options = Ec2::Blackout::Options.new(:include_by_tag =>  ["foo=bar"])
+        instance = stubbed_startable_instance(aws_instance, options)
+        aws_instance.stub(:tags).and_return(ec2_tags("foo" => "bar", Ec2Instance::TIMESTAMP_TAG_NAME => '2014-02-13 02:35:52 UTC'))
+        startable, reason = instance.startable?
+        expect(startable).to be_true
+      end
+
+      it "returns false if the instance does not match the include tags specified in the options" do
+        options = Ec2::Blackout::Options.new(:include_by_tag =>  ["foo=bar"])
+        instance = stubbed_startable_instance(aws_instance, options)
+        aws_instance.stub(:tags).and_return(ec2_tags("bar" => "baz", Ec2Instance::TIMESTAMP_TAG_NAME => '2014-02-13 02:35:52 UTC'))
+        startable, reason = instance.startable?
+        expect(startable).to be_false
+      end
+
     end
 
 
